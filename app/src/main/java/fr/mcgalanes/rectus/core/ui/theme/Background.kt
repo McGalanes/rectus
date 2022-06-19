@@ -1,4 +1,4 @@
-package fr.mcgalanes.newton.core.ui.theme
+package fr.mcgalanes.rectus.core.ui.theme
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf

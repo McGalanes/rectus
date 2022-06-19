@@ -29,6 +29,10 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
+    buildFeatures {
+        compose = true
+    }
 }
 
 dependencies {
@@ -49,6 +53,9 @@ dependencies {
     implementation(libs.androidx.compose.ui.util)
     implementation(libs.androidx.compose.runtime)
     implementation(libs.androidx.compose.runtime.livedata)
+    implementation(libs.androidx.activity.compose)
+    implementation(libs.coil.kt.compose)
+
     debugApi(libs.androidx.compose.ui.tooling)
 
     implementation(libs.material3)
