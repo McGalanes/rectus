@@ -2,6 +2,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     kotlin("kapt")
+    id("dagger.hilt.android.plugin")
 }
 
 android {
@@ -60,6 +61,10 @@ dependencies {
     implementation(libs.moshi.core)
     implementation(libs.retrofit.converter.moshi)
     implementation(libs.retrofit.core)
+
+    implementation(libs.hilt.android)
+
+    kapt(libs.hilt.compiler)
 
     kapt(libs.moshi.codegen)
 
