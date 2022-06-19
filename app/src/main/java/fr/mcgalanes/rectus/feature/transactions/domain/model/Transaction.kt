@@ -1,4 +1,4 @@
-package fr.mcgalanes.rectus.feature.transactions.ui.model
+package fr.mcgalanes.rectus.feature.transactions.domain.model
 
 import java.time.LocalDate
 

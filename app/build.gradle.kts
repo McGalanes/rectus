@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    kotlin("kapt")
 }
 
 android {
@@ -55,10 +56,14 @@ dependencies {
     implementation(libs.androidx.compose.runtime.livedata)
     implementation(libs.androidx.activity.compose)
     implementation(libs.coil.kt.compose)
+    implementation(libs.material3)
+    implementation(libs.moshi.core)
+    implementation(libs.retrofit.converter.moshi)
+    implementation(libs.retrofit.core)
+
+    kapt(libs.moshi.codegen)
 
     debugApi(libs.androidx.compose.ui.tooling)
-
-    implementation(libs.material3)
 
     testImplementation(libs.junit4)
 }
