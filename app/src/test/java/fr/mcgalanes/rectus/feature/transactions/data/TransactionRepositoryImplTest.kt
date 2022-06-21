@@ -1,7 +1,9 @@
 package fr.mcgalanes.rectus.feature.transactions.data
 
-import fr.mcgalanes.rectus.feature.transactions.data.entity.TransactionEntity
-import fr.mcgalanes.rectus.feature.transactions.data.entity.TransactionsResponse
+import fr.mcgalanes.rectus.feature.transactions.data.remote.TransactionApiService
+import fr.mcgalanes.rectus.feature.transactions.data.repository.TransactionRepositoryImpl
+import fr.mcgalanes.rectus.feature.transactions.domain.entity.TransactionEntity
+import fr.mcgalanes.rectus.feature.transactions.domain.entity.TransactionsResponse
 import io.mockk.coEvery
 import io.mockk.mockk
 import java.io.IOException
@@ -17,7 +19,7 @@ internal class TransactionRepositoryImplTest {
     private val repository = TransactionRepositoryImpl(service)
 
     @Test
-    fun `getTransactions should return transactions when succeed`() = runTest {
+    fun `getTransactions should return entities when succeed`() = runTest {
         //GIVEN
         val transactions = mockk<List<TransactionEntity>>()
         val response = TransactionsResponse(transactions)
@@ -40,6 +42,6 @@ internal class TransactionRepositoryImplTest {
         val actual = repository.getTransactions()
 
         //THEN
-        actual.onFailure { Assert.assertEquals(error, it) }
+        Assert.assertEquals(error, actual.exceptionOrNull())
     }
 }

@@ -1,6 +1,6 @@
-package fr.mcgalanes.rectus.feature.transactions.data
+package fr.mcgalanes.rectus.feature.transactions.data.remote
 
-import fr.mcgalanes.rectus.feature.transactions.data.entity.TransactionsResponse
+import fr.mcgalanes.rectus.feature.transactions.domain.entity.TransactionsResponse
 import retrofit2.http.GET
 
 interface TransactionApiService {
