@@ -71,4 +71,6 @@ dependencies {
     debugApi(libs.androidx.compose.ui.tooling)
 
     testImplementation(libs.junit4)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.mockk)
 }
