@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 @HiltViewModel
-class TransactionListViewModel @Inject constructor(
+class TransactionsViewModel @Inject constructor(
     private val getTransactions: GetTransactionsUseCase,
 ) : ViewModel() {
 
@@ -23,12 +23,12 @@ class TransactionListViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            val transactionState =
+            val transactionsState =
                 getTransactions()
                     .map { TransactionsUiState.Transactions(it) }
                     .getOrElse { TransactionsUiState.Error }
 
-            _uiState.value = ScreenUiState(transactionsState = transactionState)
+            _uiState.value = ScreenUiState(transactionsState)
         }
     }
 

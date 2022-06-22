@@ -3,8 +3,8 @@ package fr.mcgalanes.rectus.feature.transactions.ui.list
 import fr.mcgalanes.rectus.core.testing.rule.MainCoroutineScopeRule
 import fr.mcgalanes.rectus.feature.transactions.domain.nextTransactionList
 import fr.mcgalanes.rectus.feature.transactions.domain.usecase.GetTransactionsUseCase
-import fr.mcgalanes.rectus.feature.transactions.ui.list.TransactionListViewModel.ScreenUiState
-import fr.mcgalanes.rectus.feature.transactions.ui.list.TransactionListViewModel.TransactionsUiState
+import fr.mcgalanes.rectus.feature.transactions.ui.list.TransactionsViewModel.ScreenUiState
+import fr.mcgalanes.rectus.feature.transactions.ui.list.TransactionsViewModel.TransactionsUiState
 import io.mockk.coEvery
 import io.mockk.mockk
 import java.io.IOException
@@ -20,7 +20,7 @@ import org.junit.Test
 
 @DelicateCoroutinesApi
 @OptIn(ExperimentalCoroutinesApi::class)
-internal class TransactionListViewModelTest {
+internal class TransactionsViewModelTest {
 
     @get:Rule val coroutineScopeRule = MainCoroutineScopeRule()
 
@@ -29,7 +29,7 @@ internal class TransactionListViewModelTest {
     @Test
     fun `on init should show loading`() = runTest {
         //WHEN
-        val viewModel = TransactionListViewModel(getTransactions)
+        val viewModel = TransactionsViewModel(getTransactions)
 
         //THEN
         assertEquals(
@@ -45,7 +45,7 @@ internal class TransactionListViewModelTest {
         coEvery { getTransactions() } returns Result.success(transactions)
 
         //WHEN
-        val viewModel = TransactionListViewModel(getTransactions)
+        val viewModel = TransactionsViewModel(getTransactions)
 
         //THEN
         assertEquals(
@@ -61,7 +61,7 @@ internal class TransactionListViewModelTest {
         coEvery { getTransactions() } returns Result.failure(error)
 
         //WHEN
-        val viewModel = TransactionListViewModel(getTransactions)
+        val viewModel = TransactionsViewModel(getTransactions)
 
         //THEN
         assertEquals(

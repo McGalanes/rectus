@@ -3,7 +3,7 @@ package fr.mcgalanes.rectus.feature.transactions.domain.mapper
 import fr.mcgalanes.rectus.feature.transactions.domain.nextTransactionEntity
 import java.time.ZonedDateTime
 import kotlin.random.Random
-import org.junit.Assert
+import org.junit.Assert.assertEquals
 import org.junit.Test
 
 
@@ -18,9 +18,9 @@ internal class TransactionMapperTest {
         val model = entity.toModel()
 
         //THEN
-        Assert.assertEquals(model.thumbUrl, entity.largeIcon?.url)
-        Assert.assertEquals(model.title, entity.name)
-        Assert.assertEquals(model.date, ZonedDateTime.parse(entity.date).toLocalDate())
-        Assert.assertEquals(model.priceInDecimal, entity.amount!!.value)
+        assertEquals(entity.largeIcon?.url, model.thumbUrl)
+        assertEquals(entity.name, model.title)
+        assertEquals(ZonedDateTime.parse(entity.date).toLocalDate(), model.date)
+        assertEquals(entity.amount!!.value, model.priceInDecimal)
     }
 }

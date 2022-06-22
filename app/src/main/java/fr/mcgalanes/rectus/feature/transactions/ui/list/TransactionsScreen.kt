@@ -26,26 +26,25 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.capitalize
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 import fr.mcgalanes.rectus.core.ui.theme.DarkPurple
 import fr.mcgalanes.rectus.core.ui.theme.Gray
 import fr.mcgalanes.rectus.feature.transactions.domain.model.Transaction
-import fr.mcgalanes.rectus.feature.transactions.ui.list.TransactionListViewModel.TransactionsUiState
+import fr.mcgalanes.rectus.feature.transactions.ui.list.TransactionsViewModel.TransactionsUiState
 import java.time.format.TextStyle
 import java.util.Locale
 
 @RootNavGraph(start = true)
 @Destination
 @Composable
-fun TransactionListScreen(
-    viewModel: TransactionListViewModel = hiltViewModel()
+fun TransactionsScreen(
+    viewModel: TransactionsViewModel
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
-    TransactionList(uiState.transactionsState)
+    TransactionList(transactionsState = uiState.transactionsState)
 }
 
 @Composable
@@ -56,7 +55,7 @@ fun TransactionList(transactionsState: TransactionsUiState) {
             .padding(horizontal = 24.dp)
     ) {
         when (transactionsState) {
-            is TransactionsUiState.Loading -> Unit
+            is TransactionsUiState.Loading -> Unit //TODO
 
             is TransactionsUiState.Transactions -> {
                 items(items = transactionsState.transactions) {
@@ -67,7 +66,7 @@ fun TransactionList(transactionsState: TransactionsUiState) {
                 }
             }
 
-            is TransactionsUiState.Error -> Unit
+            TransactionsUiState.Error -> TODO()
         }
     }
 }
