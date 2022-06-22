@@ -3,6 +3,20 @@ plugins {
     id("org.jetbrains.kotlin.android")
     kotlin("kapt")
     id("dagger.hilt.android.plugin")
+    id("com.google.devtools.ksp").version("1.6.21-1.0.6")
+}
+
+kotlin {
+    sourceSets {
+        debug {
+            kotlin.srcDir("build/generated/ksp/debug/kotlin")
+        }
+
+        release {
+            kotlin.srcDir("build/generated/release/debug/kotlin")
+        }
+
+    }
 }
 
 android {
@@ -60,11 +74,15 @@ dependencies {
     implementation(libs.androidx.compose.runtime.livedata)
     implementation(libs.androidx.activity.compose)
     implementation(libs.coil.kt.compose)
+    implementation(libs.compose.destinations.core)
     implementation(libs.hilt.android)
     implementation(libs.material3)
     implementation(libs.moshi.core)
     implementation(libs.retrofit.converter.moshi)
     implementation(libs.retrofit.core)
+
+
+    ksp(libs.compose.destinations.ksp)
 
     kapt(libs.moshi.codegen)
     kapt(libs.hilt.compiler)
