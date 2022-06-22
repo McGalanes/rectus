@@ -41,8 +41,8 @@ android {
 }
 
 dependencies {
-    implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.core.ktx)
 
     // TODO : Remove these dependency once we upgrade to Android Studio Dolphin b/228889042
     // These dependencies are currently necessary to render Compose previews
@@ -60,19 +60,18 @@ dependencies {
     implementation(libs.androidx.compose.runtime.livedata)
     implementation(libs.androidx.activity.compose)
     implementation(libs.coil.kt.compose)
+    implementation(libs.hilt.android)
     implementation(libs.material3)
     implementation(libs.moshi.core)
     implementation(libs.retrofit.converter.moshi)
     implementation(libs.retrofit.core)
 
-    implementation(libs.hilt.android)
-
-    kapt(libs.hilt.compiler)
-
     kapt(libs.moshi.codegen)
+    kapt(libs.hilt.compiler)
 
     debugApi(libs.androidx.compose.ui.tooling)
 
+    testImplementation(libs.androidx.arch.core.testing.core)
     testImplementation(libs.junit4)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.mockk)

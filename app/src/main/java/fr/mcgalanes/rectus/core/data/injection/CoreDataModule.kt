@@ -21,7 +21,7 @@ object CoreDataModule {
 
     @Singleton
     @Provides
-    fun provideRetrofit(client: OkHttpClient): Retrofit =
+    fun provideRetrofit(): Retrofit =
         Retrofit.Builder()
             .client(OkHttpClient.Builder().build())
             .addConverterFactory(MoshiConverterFactory.create())
