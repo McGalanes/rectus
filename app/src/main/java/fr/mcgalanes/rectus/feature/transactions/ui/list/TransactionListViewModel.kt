@@ -16,20 +16,27 @@ class TransactionListViewModel @Inject constructor(
     private val getTransactions: GetTransactionsUseCase,
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow<ScreenUiState>(ScreenUiState.Loading)
+    private val _uiState = MutableStateFlow(
+        ScreenUiState(transactionsState = TransactionsUiState.Loading)
+    )
     val uiState: StateFlow<ScreenUiState> = _uiState.asStateFlow()
 
     init {
         viewModelScope.launch {
-            getTransactions()
-                .onSuccess { _uiState.value = ScreenUiState.Transactions(it) }
-                .onFailure { _uiState.value = ScreenUiState.Error }
+            val transactionState =
+                getTransactions()
+                    .map { TransactionsUiState.Transactions(it) }
+                    .getOrElse { TransactionsUiState.Error }
+
+            _uiState.value = ScreenUiState(transactionsState = transactionState)
         }
     }
 
-    sealed interface ScreenUiState {
-        data class Transactions(val transactions: List<Transaction>) : ScreenUiState
-        object Loading : ScreenUiState
-        object Error : ScreenUiState
+    data class ScreenUiState(val transactionsState: TransactionsUiState)
+
+    sealed interface TransactionsUiState {
+        data class Transactions(val transactions: List<Transaction>) : TransactionsUiState
+        object Loading : TransactionsUiState
+        object Error : TransactionsUiState
     }
 }

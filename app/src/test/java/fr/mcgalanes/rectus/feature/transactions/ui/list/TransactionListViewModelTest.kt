@@ -4,6 +4,7 @@ import fr.mcgalanes.rectus.core.testing.rule.MainCoroutineScopeRule
 import fr.mcgalanes.rectus.feature.transactions.domain.nextTransactionList
 import fr.mcgalanes.rectus.feature.transactions.domain.usecase.GetTransactionsUseCase
 import fr.mcgalanes.rectus.feature.transactions.ui.list.TransactionListViewModel.ScreenUiState
+import fr.mcgalanes.rectus.feature.transactions.ui.list.TransactionListViewModel.TransactionsUiState
 import io.mockk.coEvery
 import io.mockk.mockk
 import java.io.IOException
@@ -31,8 +32,10 @@ internal class TransactionListViewModelTest {
         val viewModel = TransactionListViewModel(getTransactions)
 
         //THEN
-        val actual = viewModel.uiState.first()
-        assertEquals(ScreenUiState.Loading, actual)
+        assertEquals(
+            ScreenUiState(transactionsState = TransactionsUiState.Loading),
+            viewModel.uiState.first()
+        )
     }
 
     @Test
@@ -45,8 +48,10 @@ internal class TransactionListViewModelTest {
         val viewModel = TransactionListViewModel(getTransactions)
 
         //THEN
-        val actual = viewModel.uiState.first()
-        assertEquals(ScreenUiState.Transactions(transactions), actual)
+        assertEquals(
+            ScreenUiState(transactionsState = TransactionsUiState.Transactions(transactions)),
+            viewModel.uiState.first()
+        )
     }
 
     @Test
@@ -59,7 +64,9 @@ internal class TransactionListViewModelTest {
         val viewModel = TransactionListViewModel(getTransactions)
 
         //THEN
-        val actual = viewModel.uiState.first()
-        assertEquals(ScreenUiState.Error, actual)
+        assertEquals(
+            ScreenUiState(transactionsState = TransactionsUiState.Error),
+            viewModel.uiState.first()
+        )
     }
 }

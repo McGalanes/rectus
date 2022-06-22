@@ -19,37 +19,53 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.capitalize
 import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 import fr.mcgalanes.rectus.core.ui.theme.DarkPurple
 import fr.mcgalanes.rectus.core.ui.theme.Gray
 import fr.mcgalanes.rectus.feature.transactions.domain.model.Transaction
+import fr.mcgalanes.rectus.feature.transactions.ui.list.TransactionListViewModel.TransactionsUiState
 
 @RootNavGraph(start = true)
 @Destination
 @Composable
-fun TransactionListScreen() {
-    TransactionList(transactions = emptyList())
+fun TransactionListScreen(
+    viewModel: TransactionListViewModel = hiltViewModel()
+) {
+    val uiState by viewModel.uiState.collectAsState()
+
+    TransactionList(uiState.transactionsState)
 }
 
 @Composable
-fun TransactionList(transactions: List<Transaction>) {
+fun TransactionList(transactionsState: TransactionsUiState) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
             .padding(horizontal = 24.dp)
     ) {
-        items(items = transactions) {
-            TransactionItem(
-                transaction = it,
-                modifier = Modifier.padding(vertical = 8.dp)
-            )
+        when (transactionsState) {
+            is TransactionsUiState.Loading -> Unit
+
+            is TransactionsUiState.Transactions -> {
+                items(items = transactionsState.transactions) {
+                    TransactionItem(
+                        transaction = it,
+                        modifier = Modifier.padding(vertical = 8.dp)
+                    )
+                }
+            }
+
+            is TransactionsUiState.Error -> Unit
         }
     }
 }

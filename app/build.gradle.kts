@@ -6,19 +6,6 @@ plugins {
     id("com.google.devtools.ksp").version("1.6.21-1.0.6")
 }
 
-kotlin {
-    sourceSets {
-        debug {
-            kotlin.srcDir("build/generated/ksp/debug/kotlin")
-        }
-
-        release {
-            kotlin.srcDir("build/generated/release/debug/kotlin")
-        }
-
-    }
-}
-
 android {
     compileSdk = 32
 
@@ -38,6 +25,7 @@ android {
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -52,6 +40,18 @@ android {
     buildFeatures {
         compose = true
     }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.2.0-rc02"
+    }
+
+    applicationVariants.all {
+        kotlin.sourceSets {
+            getByName(name) {
+                kotlin.srcDir("build/generated/ksp/$name/kotlin")
+            }
+        }
+    }
 }
 
 dependencies {
@@ -64,6 +64,7 @@ dependencies {
     debugImplementation(libs.androidx.lifecycle.viewModelCompose)
     debugImplementation(libs.androidx.savedstate.ktx)
 
+    implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.compose.foundation)
     implementation(libs.androidx.compose.foundation.layout)
     implementation(libs.androidx.compose.material.iconsExtended)
@@ -72,7 +73,7 @@ dependencies {
     implementation(libs.androidx.compose.ui.util)
     implementation(libs.androidx.compose.runtime)
     implementation(libs.androidx.compose.runtime.livedata)
-    implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.coil.kt.compose)
     implementation(libs.compose.destinations.core)
     implementation(libs.hilt.android)
