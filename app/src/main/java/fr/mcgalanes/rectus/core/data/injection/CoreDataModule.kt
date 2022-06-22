@@ -23,6 +23,7 @@ object CoreDataModule {
     @Provides
     fun provideRetrofit(): Retrofit =
         Retrofit.Builder()
+            .baseUrl("https://gist.githubusercontent.com")
             .client(OkHttpClient.Builder().build())
             .addConverterFactory(MoshiConverterFactory.create())
             .addCallAdapterFactory(ResultCallAdapterFactory())

@@ -6,7 +6,7 @@ import java.time.ZonedDateTime
 
 internal fun TransactionEntity.toModel(): Transaction =
     Transaction(
-        thumbUrl = requireNotNull(largeIcon?.url),
+        thumbUrl = largeIcon?.url,
         title = requireNotNull(name),
         date = ZonedDateTime.parse(requireNotNull(date)).toLocalDate(),
         priceInDecimal = requireNotNull(amount?.value),

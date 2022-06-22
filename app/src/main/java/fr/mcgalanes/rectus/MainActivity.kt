@@ -4,11 +4,11 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material3.MaterialTheme
-import androidx.navigation.NavGraph
 import com.ramcosta.composedestinations.DestinationsNavHost
+import dagger.hilt.android.AndroidEntryPoint
 import fr.mcgalanes.rectus.feature.transactions.ui.list.NavGraphs
-import fr.mcgalanes.rectus.feature.transactions.ui.list.TransactionListScreen
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -17,7 +17,6 @@ class MainActivity : ComponentActivity() {
         setContent {
             MaterialTheme {
                 DestinationsNavHost(navGraph = NavGraphs.root)
-                TransactionListScreen()
             }
         }
     }

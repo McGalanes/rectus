@@ -18,7 +18,7 @@ internal class TransactionMapperTest {
         val model = entity.toModel()
 
         //THEN
-        Assert.assertEquals(model.thumbUrl, entity.largeIcon!!.url)
+        Assert.assertEquals(model.thumbUrl, entity.largeIcon?.url)
         Assert.assertEquals(model.title, entity.name)
         Assert.assertEquals(model.date, ZonedDateTime.parse(entity.date).toLocalDate())
         Assert.assertEquals(model.priceInDecimal, entity.amount!!.value)

@@ -1,7 +1,9 @@
 package fr.mcgalanes.rectus.feature.transactions.domain.entity
 
 import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class TransactionEntity(
     @Json(name = "name") val name: String?,
     @Json(name = "type") val type: String?,
@@ -11,10 +13,12 @@ data class TransactionEntity(
     @Json(name = "small_icon") val smallIcon: IconEntity?,
     @Json(name = "large_icon") val largeIcon: IconEntity?,
 ) {
+    @JsonClass(generateAdapter = true)
     data class AmountEntity(
         @Json(name = "value") val value: Double?,
         @Json(name = "currency") val currency: CurrencyEntity?,
     ) {
+        @JsonClass(generateAdapter = true)
         data class CurrencyEntity(
             @Json(name = "iso_3") val iso: String?,
             @Json(name = "symbol") val symbol: String?,
@@ -22,6 +26,7 @@ data class TransactionEntity(
         )
     }
 
+    @JsonClass(generateAdapter = true)
     data class IconEntity(
         @Json(name = "url") val url: String?,
         @Json(name = "category") val category: String?,
