@@ -1,7 +1,5 @@
 package fr.mcgalanes.rectus.feature.transactions.ui.list
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -25,21 +23,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.capitalize
 import androidx.compose.ui.text.intl.Locale
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
+import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.annotation.RootNavGraph
 import fr.mcgalanes.rectus.core.ui.theme.DarkPurple
 import fr.mcgalanes.rectus.core.ui.theme.Gray
 import fr.mcgalanes.rectus.feature.transactions.domain.model.Transaction
 
-@RequiresApi(Build.VERSION_CODES.O)
-@Preview(name = "screen")
+@RootNavGraph(start = true)
+@Destination
 @Composable
 fun TransactionListScreen() {
     TransactionList(transactions = emptyList())
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun TransactionList(transactions: List<Transaction>) {
     LazyColumn(
@@ -56,7 +54,6 @@ fun TransactionList(transactions: List<Transaction>) {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun TransactionItem(
     transaction: Transaction,
