@@ -17,8 +17,12 @@ class TransactionsViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(
-        ScreenUiState(transactionsState = TransactionsUiState.Loading)
+        ScreenUiState(
+            transactionsState = TransactionsUiState.Loading,
+            transactionDetailSheetState = TransactionDetailSheetUiState.Hide
+        )
     )
+
     val uiState: StateFlow<ScreenUiState> = _uiState.asStateFlow()
 
     init {
@@ -28,15 +32,34 @@ class TransactionsViewModel @Inject constructor(
                     .map { TransactionsUiState.Transactions(it) }
                     .getOrElse { TransactionsUiState.Error }
 
-            _uiState.value = ScreenUiState(transactionsState)
+            _uiState.value = ScreenUiState(
+                transactionsState = transactionsState,
+                transactionDetailSheetState = TransactionDetailSheetUiState.Hide,
+            )
         }
     }
 
-    data class ScreenUiState(val transactionsState: TransactionsUiState)
+    fun onTransactionClick(transaction: Transaction) {
+        _uiState.run {
+            value = value.copy(
+                transactionDetailSheetState = TransactionDetailSheetUiState.Show(transaction)
+            )
+        }
+    }
+
+    data class ScreenUiState(
+        val transactionsState: TransactionsUiState,
+        val transactionDetailSheetState: TransactionDetailSheetUiState,
+    )
 
     sealed interface TransactionsUiState {
         data class Transactions(val transactions: List<Transaction>) : TransactionsUiState
         object Loading : TransactionsUiState
         object Error : TransactionsUiState
+    }
+
+    sealed interface TransactionDetailSheetUiState {
+        data class Show(val transaction: Transaction) : TransactionDetailSheetUiState
+        object Hide : TransactionDetailSheetUiState
     }
 }
