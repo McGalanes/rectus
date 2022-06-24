@@ -1,6 +1,6 @@
 package fr.mcgalanes.rectus.feature.transactions.domain.mapper
 
-import fr.mcgalanes.rectus.feature.transactions.domain.entity.TransactionEntity
+import fr.mcgalanes.rectus.feature.transactions.data.datasource.remote.entity.TransactionEntity
 import fr.mcgalanes.rectus.feature.transactions.domain.model.Transaction
 import java.time.ZonedDateTime
 

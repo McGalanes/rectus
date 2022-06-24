@@ -12,5 +12,5 @@ import fr.mcgalanes.rectus.feature.transactions.domain.repository.TransactionsRe
 interface TransactionRepositoryModule {
 
     @Binds
-    fun bindTransactionRepository(repositoryImpl: TransactionRepositoryImpl): TransactionsRepository
+    fun bindTransactionRepository(impl: TransactionRepositoryImpl): TransactionsRepository
 }

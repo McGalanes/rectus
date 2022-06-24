@@ -1,8 +1,7 @@
 package fr.mcgalanes.rectus.feature.transactions.domain.usecase
 
+import fr.mcgalanes.rectus.feature.transactions.domain.nextTransactionList
 import fr.mcgalanes.rectus.feature.transactions.domain.repository.TransactionsRepository
-import fr.mcgalanes.rectus.feature.transactions.domain.mapper.toModel
-import fr.mcgalanes.rectus.feature.transactions.domain.nextTransactionEntityList
 import io.mockk.coEvery
 import io.mockk.mockk
 import java.io.IOException
@@ -22,15 +21,14 @@ internal class GetTransactionsUseCaseTest {
     @Test
     fun `should return transactions when succeed`() = runTest {
         //GIVEN
-        val entities = Random.nextTransactionEntityList(size = 3)
-        coEvery { repository.getTransactions() } returns Result.success(entities)
+        val transactions = Random.nextTransactionList(size = 3)
+        coEvery { repository.getTransactions() } returns Result.success(transactions)
 
         //WHEN
         val actual = useCase()
 
         //THEN
-        val expected = entities.map { it.toModel() }
-        Assert.assertEquals(expected, actual.getOrThrow())
+        Assert.assertEquals(transactions, actual.getOrThrow())
     }
 
     @Test

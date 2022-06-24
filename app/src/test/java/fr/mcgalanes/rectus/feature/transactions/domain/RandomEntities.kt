@@ -1,10 +1,10 @@
 package fr.mcgalanes.rectus.feature.transactions.domain
 
 import fr.mcgalanes.rectus.core.common.nextString
-import fr.mcgalanes.rectus.feature.transactions.domain.entity.TransactionEntity
-import fr.mcgalanes.rectus.feature.transactions.domain.entity.TransactionEntity.AmountEntity
-import fr.mcgalanes.rectus.feature.transactions.domain.entity.TransactionEntity.AmountEntity.CurrencyEntity
-import fr.mcgalanes.rectus.feature.transactions.domain.entity.TransactionEntity.IconEntity
+import fr.mcgalanes.rectus.feature.transactions.data.datasource.remote.entity.TransactionEntity
+import fr.mcgalanes.rectus.feature.transactions.data.datasource.remote.entity.TransactionEntity.AmountEntity
+import fr.mcgalanes.rectus.feature.transactions.data.datasource.remote.entity.TransactionEntity.AmountEntity.CurrencyEntity
+import fr.mcgalanes.rectus.feature.transactions.data.datasource.remote.entity.TransactionEntity.IconEntity
 import kotlin.random.Random
 
 fun Random.nextTransactionEntityList(size: Int): List<TransactionEntity> =

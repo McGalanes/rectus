@@ -1,4 +1,4 @@
-package fr.mcgalanes.rectus.feature.transactions.domain.entity
+package fr.mcgalanes.rectus.feature.transactions.data.datasource.remote.entity
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
