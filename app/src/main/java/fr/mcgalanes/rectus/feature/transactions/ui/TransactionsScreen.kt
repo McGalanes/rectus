@@ -2,7 +2,6 @@
 
 package fr.mcgalanes.rectus.feature.transactions.ui
 
-import androidx.compose.ui.text.intl.Locale.Companion as AndroidLocale
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -33,19 +32,17 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.text.capitalize
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 import fr.mcgalanes.rectus.core.common.formatter.toPriceString
+import fr.mcgalanes.rectus.core.common.formatter.toShortDateString
 import fr.mcgalanes.rectus.core.ui.theme.DarkPurple
 import fr.mcgalanes.rectus.core.ui.theme.Gray
 import fr.mcgalanes.rectus.feature.transactions.domain.model.Transaction
 import fr.mcgalanes.rectus.feature.transactions.ui.TransactionsViewModel.TransactionsUiState
-import java.time.format.TextStyle
-import java.util.Locale
 import kotlinx.coroutines.launch
 
 @RootNavGraph(start = true)
@@ -149,9 +146,8 @@ fun TransactionItem(
                 )
             }
 
-            val currentLocale = AndroidLocale.current
             Text(
-                text = transaction.date.run { "$dayOfMonth ${month.getDisplayName(TextStyle.FULL, Locale(currentLocale.language)).lowercase().capitalize(AndroidLocale.current)}" },
+                text = transaction.date.toShortDateString(),
                 style = MaterialTheme.typography.bodyMedium,
                 color = Gray,
             )
