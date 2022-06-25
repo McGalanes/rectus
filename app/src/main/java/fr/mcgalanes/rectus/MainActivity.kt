@@ -6,7 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.material3.MaterialTheme
 import com.ramcosta.composedestinations.DestinationsNavHost
 import dagger.hilt.android.AndroidEntryPoint
-import fr.mcgalanes.rectus.feature.transactions.ui.list.NavGraphs
+import fr.mcgalanes.rectus.feature.transactions.ui.NavGraphs
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {

@@ -39,6 +39,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
+import fr.mcgalanes.rectus.core.common.formatter.toPriceString
 import fr.mcgalanes.rectus.core.ui.theme.DarkPurple
 import fr.mcgalanes.rectus.core.ui.theme.Gray
 import fr.mcgalanes.rectus.feature.transactions.domain.model.Transaction
@@ -142,7 +143,7 @@ fun TransactionItem(
                 )
 
                 Text(
-                    text = transaction.priceInDecimal.formatPrice(),
+                    text = transaction.priceInDecimal.toPriceString(showPlusSymbol = true),
                     style = MaterialTheme.typography.bodyLarge,
                     color = DarkPurple,
                 )
@@ -165,8 +166,7 @@ fun TransactionDetail(selectedTransaction: Transaction?) {
             .fillMaxWidth()
             .height(200.dp)
     ) {
-        Text(text = "${selectedTransaction?.title} / ${selectedTransaction?.priceInDecimal?.formatPrice()}")
+        Text(text = "${selectedTransaction?.title} / ${selectedTransaction?.priceInDecimal?.toPriceString()}")
     }
 }
 
-private fun Double.formatPrice(): String = "$this €"
