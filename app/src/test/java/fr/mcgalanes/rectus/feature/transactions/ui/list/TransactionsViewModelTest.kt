@@ -4,8 +4,8 @@ import fr.mcgalanes.rectus.core.testing.rule.MainCoroutineScopeRule
 import fr.mcgalanes.rectus.feature.transactions.domain.nextTransaction
 import fr.mcgalanes.rectus.feature.transactions.domain.nextTransactionList
 import fr.mcgalanes.rectus.feature.transactions.domain.usecase.GetTransactionsUseCase
-import fr.mcgalanes.rectus.feature.transactions.ui.list.TransactionsViewModel.TransactionDetailSheetUiState
-import fr.mcgalanes.rectus.feature.transactions.ui.list.TransactionsViewModel.TransactionsUiState
+import fr.mcgalanes.rectus.feature.transactions.ui.TransactionsViewModel
+import fr.mcgalanes.rectus.feature.transactions.ui.TransactionsViewModel.TransactionsUiState
 import io.mockk.coEvery
 import io.mockk.mockk
 import java.io.IOException
@@ -57,21 +57,6 @@ internal class TransactionsViewModelTest {
     }
 
     @Test
-    fun `on init should hide transaction detail sheet`() = runTest {
-        //GIVEN
-        coEvery { getTransactions() } returns mockk()
-
-        //WHEN
-        val viewModel = viewModel()
-
-        //THEN
-        assertEquals(
-            TransactionDetailSheetUiState.Hide,
-            viewModel.uiState.first().transactionDetailSheetState
-        )
-    }
-
-    @Test
     fun `on init should show error when fail`() = runTest {
         //GIVEN
         val error = IOException()
@@ -88,18 +73,18 @@ internal class TransactionsViewModelTest {
     }
 
     @Test
-    fun `onTransactionClick should show transaction detail sheet`() = runTest {
+    fun `onTransactionItemClick should save selected transaction`() = runTest {
         //GIVEN
         val transaction = Random.nextTransaction()
         val viewModel = viewModel()
 
         //WHEN
-        viewModel.onTransactionClick(transaction)
+        viewModel.onTransactionItemClick(transaction)
 
         //THEN
         assertEquals(
-            TransactionDetailSheetUiState.Show(transaction),
-            viewModel.uiState.first().transactionDetailSheetState
+            transaction,
+            viewModel.selectedTransaction.value
         )
     }
 }

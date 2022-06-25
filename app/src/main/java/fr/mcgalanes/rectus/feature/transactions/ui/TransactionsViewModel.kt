@@ -1,4 +1,4 @@
-package fr.mcgalanes.rectus.feature.transactions.ui.list
+package fr.mcgalanes.rectus.feature.transactions.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -17,13 +17,12 @@ class TransactionsViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(
-        ScreenUiState(
-            transactionsState = TransactionsUiState.Loading,
-            transactionDetailSheetState = TransactionDetailSheetUiState.Hide
-        )
+        ScreenUiState(transactionsState = TransactionsUiState.Loading)
     )
-
     val uiState: StateFlow<ScreenUiState> = _uiState.asStateFlow()
+
+    private val _selectedTransaction = MutableStateFlow<Transaction?>(null)
+    val selectedTransaction: StateFlow<Transaction?> = _selectedTransaction.asStateFlow()
 
     init {
         viewModelScope.launch {
@@ -32,34 +31,19 @@ class TransactionsViewModel @Inject constructor(
                     .map { TransactionsUiState.Transactions(it) }
                     .getOrElse { TransactionsUiState.Error }
 
-            _uiState.value = ScreenUiState(
-                transactionsState = transactionsState,
-                transactionDetailSheetState = TransactionDetailSheetUiState.Hide,
-            )
+            _uiState.value = ScreenUiState(transactionsState = transactionsState)
         }
     }
 
-    fun onTransactionClick(transaction: Transaction) {
-        _uiState.run {
-            value = value.copy(
-                transactionDetailSheetState = TransactionDetailSheetUiState.Show(transaction)
-            )
-        }
+    fun onTransactionItemClick(transaction: Transaction) {
+        _selectedTransaction.value = transaction
     }
 
-    data class ScreenUiState(
-        val transactionsState: TransactionsUiState,
-        val transactionDetailSheetState: TransactionDetailSheetUiState,
-    )
+    data class ScreenUiState(val transactionsState: TransactionsUiState)
 
     sealed interface TransactionsUiState {
         data class Transactions(val transactions: List<Transaction>) : TransactionsUiState
         object Loading : TransactionsUiState
         object Error : TransactionsUiState
-    }
-
-    sealed interface TransactionDetailSheetUiState {
-        data class Show(val transaction: Transaction) : TransactionDetailSheetUiState
-        object Hide : TransactionDetailSheetUiState
     }
 }
