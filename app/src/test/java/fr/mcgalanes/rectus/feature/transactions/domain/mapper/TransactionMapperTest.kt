@@ -20,7 +20,7 @@ internal class TransactionMapperTest {
         //THEN
         assertEquals(entity.largeIcon?.url, model.thumbUrl)
         assertEquals(entity.name, model.title)
-        assertEquals(ZonedDateTime.parse(entity.date).toLocalDate(), model.date)
+        assertEquals(ZonedDateTime.parse(entity.date).toLocalDateTime(), model.date)
         assertEquals(entity.amount!!.value, model.priceInDecimal)
     }
 }
