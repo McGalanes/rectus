@@ -1,4 +1,4 @@
-package fr.mcgalanes.rectus.feature.transactions.domain.mapper
+package fr.mcgalanes.rectus.feature.transactions.data.mapper
 
 import fr.mcgalanes.rectus.feature.transactions.domain.nextTransactionEntity
 import java.time.ZonedDateTime

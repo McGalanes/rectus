@@ -1,7 +1,7 @@
 package fr.mcgalanes.rectus.feature.transactions.data.datasource.remote
 
 import fr.mcgalanes.rectus.feature.transactions.data.datasource.remote.entity.TransactionEntity
-import fr.mcgalanes.rectus.feature.transactions.domain.mapper.toModel
+import fr.mcgalanes.rectus.feature.transactions.data.mapper.toModel
 import fr.mcgalanes.rectus.feature.transactions.domain.model.Transaction
 import javax.inject.Inject
 

@@ -1,7 +1,7 @@
 package fr.mcgalanes.rectus.feature.transactions.data.datasource.remote
 
 import fr.mcgalanes.rectus.feature.transactions.data.datasource.remote.entity.TransactionsResponse
-import fr.mcgalanes.rectus.feature.transactions.domain.mapper.toModel
+import fr.mcgalanes.rectus.feature.transactions.data.mapper.toModel
 import fr.mcgalanes.rectus.feature.transactions.domain.nextTransactionEntityList
 import io.mockk.coEvery
 import io.mockk.mockk
