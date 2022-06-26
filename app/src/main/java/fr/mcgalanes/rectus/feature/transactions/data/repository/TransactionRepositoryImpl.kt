@@ -5,7 +5,8 @@ import fr.mcgalanes.rectus.feature.transactions.domain.model.Transaction
 import fr.mcgalanes.rectus.feature.transactions.domain.repository.TransactionsRepository
 import javax.inject.Inject
 
-class TransactionRepositoryImpl @Inject constructor(
+class TransactionRepositoryImpl
+@Inject constructor(
     private val remote: TransactionRemoteDataSource
 ) : TransactionsRepository {
 

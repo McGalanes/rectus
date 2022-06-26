@@ -12,7 +12,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 @HiltViewModel
-class TransactionsViewModel @Inject constructor(
+class TransactionsViewModel
+@Inject constructor(
     private val getTransactions: GetTransactionsUseCase,
 ) : ViewModel() {
 

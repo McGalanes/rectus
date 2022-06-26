@@ -5,7 +5,8 @@ import fr.mcgalanes.rectus.feature.transactions.data.mapper.toModel
 import fr.mcgalanes.rectus.feature.transactions.domain.model.Transaction
 import javax.inject.Inject
 
-class TransactionRemoteDataSource @Inject constructor(
+class TransactionRemoteDataSource
+@Inject constructor(
     private val apiService: TransactionApiService
 ) {
     suspend fun getTransactions(): Result<List<Transaction>> {
