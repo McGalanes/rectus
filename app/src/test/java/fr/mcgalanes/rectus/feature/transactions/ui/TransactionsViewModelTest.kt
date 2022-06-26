@@ -1,4 +1,4 @@
-package fr.mcgalanes.rectus.feature.transactions.ui.list
+package fr.mcgalanes.rectus.feature.transactions.ui
 
 import fr.mcgalanes.rectus.core.testing.rule.MainCoroutineScopeRule
 import fr.mcgalanes.rectus.feature.transactions.domain.nextTransaction
