@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -90,11 +89,7 @@ fun TransactionList(
     transactionsState: TransactionsUiState,
     onTransactionItemClick: (Transaction) -> Unit,
 ) {
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(horizontal = 24.dp)
-    ) {
+    LazyColumn(modifier = Modifier.fillMaxSize()) {
         when (transactionsState) {
             is TransactionsUiState.Loading -> Unit //TODO
 
@@ -103,7 +98,6 @@ fun TransactionList(
                     TransactionItem(
                         transaction = it,
                         onTransactionItemClick = onTransactionItemClick,
-                        modifier = Modifier.padding(vertical = 8.dp)
                     )
                 }
             }
@@ -122,16 +116,15 @@ fun TransactionItem(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .height(48.dp)
             .clickable { onTransactionItemClick(transaction) }
+            .padding(vertical = 8.dp, horizontal = 16.dp)
     ) {
 
         Image(
             painter = rememberAsyncImagePainter(transaction.thumbUrl),
-            contentDescription = null,
+            contentDescription = "transaction icon",
             modifier = Modifier
-                .fillMaxHeight()
-                .aspectRatio(1f)
+                .size(48.dp)
                 .clip(RoundedCornerShape(20.dp))
                 .background(Orange90)
         )
