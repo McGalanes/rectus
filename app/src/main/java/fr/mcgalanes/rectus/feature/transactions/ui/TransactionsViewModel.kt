@@ -9,6 +9,7 @@ import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 @HiltViewModel
@@ -22,9 +23,6 @@ class TransactionsViewModel
     )
     val uiState: StateFlow<ScreenUiState> = _uiState.asStateFlow()
 
-    private val _selectedTransaction = MutableStateFlow<Transaction?>(null)
-    val selectedTransaction: StateFlow<Transaction?> = _selectedTransaction.asStateFlow()
-
     init {
         viewModelScope.launch {
             val transactionsState =
@@ -37,10 +35,13 @@ class TransactionsViewModel
     }
 
     fun onTransactionItemClick(transaction: Transaction) {
-        _selectedTransaction.value = transaction
+        _uiState.update { it.copy(selectedTransaction = transaction) }
     }
 
-    data class ScreenUiState(val transactionsState: TransactionsUiState)
+    data class ScreenUiState(
+        val transactionsState: TransactionsUiState,
+        val selectedTransaction: Transaction? = null,
+    )
 
     sealed interface TransactionsUiState {
         data class Transactions(val transactions: List<Transaction>) : TransactionsUiState

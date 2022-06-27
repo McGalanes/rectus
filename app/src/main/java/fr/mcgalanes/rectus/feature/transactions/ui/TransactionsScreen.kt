@@ -58,7 +58,6 @@ fun TransactionsScreen(
     viewModel: TransactionsViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
-    val selectedTransaction = viewModel.selectedTransaction.collectAsState()
 
     val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val scope = rememberCoroutineScope()
@@ -70,9 +69,7 @@ fun TransactionsScreen(
     ModalBottomSheetLayout(
         sheetState = bottomSheetState,
         sheetShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
-        sheetContent = {
-            TransactionDetailSheet(selectedTransaction.value)
-        }
+        sheetContent = { TransactionDetailSheet(transaction = uiState.selectedTransaction) }
     ) {
         TransactionList(
             transactionsState = uiState.transactionsState,

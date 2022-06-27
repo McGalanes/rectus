@@ -4,7 +4,6 @@ import fr.mcgalanes.rectus.core.testing.rule.MainCoroutineScopeRule
 import fr.mcgalanes.rectus.feature.transactions.domain.nextTransaction
 import fr.mcgalanes.rectus.feature.transactions.domain.nextTransactionList
 import fr.mcgalanes.rectus.feature.transactions.domain.usecase.GetTransactionsUseCase
-import fr.mcgalanes.rectus.feature.transactions.ui.TransactionsViewModel
 import fr.mcgalanes.rectus.feature.transactions.ui.TransactionsViewModel.TransactionsUiState
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -12,9 +11,9 @@ import java.io.IOException
 import kotlin.random.Random
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
 import org.junit.Rule
 import org.junit.Test
 
@@ -36,7 +35,7 @@ internal class TransactionsViewModelTest {
         //THEN
         assertEquals(
             TransactionsUiState.Loading,
-            viewModel.uiState.first().transactionsState
+            viewModel.uiState.value.transactionsState
         )
     }
 
@@ -52,7 +51,7 @@ internal class TransactionsViewModelTest {
         //THEN
         assertEquals(
             TransactionsUiState.Transactions(transactions),
-            viewModel.uiState.first().transactionsState
+            viewModel.uiState.value.transactionsState
         )
     }
 
@@ -68,8 +67,17 @@ internal class TransactionsViewModelTest {
         //THEN
         assertEquals(
             TransactionsUiState.Error,
-            viewModel.uiState.first().transactionsState
+            viewModel.uiState.value.transactionsState
         )
+    }
+
+    @Test
+    fun `on init should not select transaction`() = runTest {
+        //WHEN
+        val viewModel = viewModel()
+
+        //THEN
+        assertNull(viewModel.uiState.value.selectedTransaction)
     }
 
     @Test
@@ -84,7 +92,7 @@ internal class TransactionsViewModelTest {
         //THEN
         assertEquals(
             transaction,
-            viewModel.selectedTransaction.value
+            viewModel.uiState.value.selectedTransaction
         )
     }
 }
