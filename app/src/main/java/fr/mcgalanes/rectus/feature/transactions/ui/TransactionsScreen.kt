@@ -7,6 +7,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
@@ -22,6 +23,7 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.rememberModalBottomSheetState
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -86,11 +88,14 @@ fun TransactionList(
     transactionsState: TransactionsUiState,
     onTransactionItemClick: (Transaction) -> Unit,
 ) {
-    LazyColumn(modifier = Modifier.fillMaxSize()) {
-        when (transactionsState) {
-            is TransactionsUiState.Loading -> Unit //TODO
+    when (transactionsState) {
+        is TransactionsUiState.Loading ->
+            Box(modifier = Modifier.fillMaxSize()) {
+                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+            }
 
-            is TransactionsUiState.Transactions -> {
+        is TransactionsUiState.Transactions ->
+            LazyColumn(modifier = Modifier.fillMaxSize()) {
                 items(items = transactionsState.transactions) {
                     TransactionItem(
                         transaction = it,
@@ -99,8 +104,7 @@ fun TransactionList(
                 }
             }
 
-            TransactionsUiState.Error -> TODO()
-        }
+        TransactionsUiState.Error -> TODO()
     }
 }
 
