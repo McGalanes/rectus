@@ -3,6 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     kotlin("kapt")
     id("dagger.hilt.android.plugin")
+    id("kotlin-parcelize")
     id("com.google.devtools.ksp").version("1.6.21-1.0.6")
 }
 

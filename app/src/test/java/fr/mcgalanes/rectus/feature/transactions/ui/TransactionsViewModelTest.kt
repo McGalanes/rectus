@@ -1,7 +1,6 @@
 package fr.mcgalanes.rectus.feature.transactions.ui
 
 import fr.mcgalanes.rectus.core.testing.rule.MainCoroutineScopeRule
-import fr.mcgalanes.rectus.feature.transactions.domain.nextTransaction
 import fr.mcgalanes.rectus.feature.transactions.domain.nextTransactionList
 import fr.mcgalanes.rectus.feature.transactions.domain.usecase.GetTransactionsUseCase
 import fr.mcgalanes.rectus.feature.transactions.ui.TransactionsViewModel.TransactionsUiState
@@ -13,7 +12,6 @@ import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNull
 import org.junit.Rule
 import org.junit.Test
 
@@ -68,31 +66,6 @@ internal class TransactionsViewModelTest {
         assertEquals(
             TransactionsUiState.Error,
             viewModel.uiState.value.transactionsState
-        )
-    }
-
-    @Test
-    fun `on init should not select transaction`() = runTest {
-        //WHEN
-        val viewModel = viewModel()
-
-        //THEN
-        assertNull(viewModel.uiState.value.selectedTransaction)
-    }
-
-    @Test
-    fun `onTransactionItemClick should save selected transaction`() = runTest {
-        //GIVEN
-        val transaction = Random.nextTransaction()
-        val viewModel = viewModel()
-
-        //WHEN
-        viewModel.onTransactionItemClick(transaction)
-
-        //THEN
-        assertEquals(
-            transaction,
-            viewModel.uiState.value.selectedTransaction
         )
     }
 }
