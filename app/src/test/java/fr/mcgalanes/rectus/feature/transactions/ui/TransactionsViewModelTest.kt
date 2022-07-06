@@ -12,6 +12,7 @@ import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 
@@ -31,10 +32,7 @@ internal class TransactionsViewModelTest {
         val viewModel = viewModel()
 
         //THEN
-        assertEquals(
-            TransactionsUiState.Loading,
-            viewModel.uiState.value.transactionsState
-        )
+        assertTrue(viewModel.uiState.value.transactionsState.isLoading)
     }
 
     @Test
@@ -48,23 +46,10 @@ internal class TransactionsViewModelTest {
 
         //THEN
         assertEquals(
-            TransactionsUiState.Transactions(transactions),
-            viewModel.uiState.value.transactionsState
-        )
-    }
-
-    @Test
-    fun `on init should show error when fail`() = runTest {
-        //GIVEN
-        val error = IOException()
-        coEvery { getTransactions() } returns Result.failure(error)
-
-        //WHEN
-        val viewModel = viewModel()
-
-        //THEN
-        assertEquals(
-            TransactionsUiState.Error,
+            TransactionsUiState(
+                transactions = transactions,
+                isLoading = false,
+            ),
             viewModel.uiState.value.transactionsState
         )
     }

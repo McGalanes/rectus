@@ -18,7 +18,9 @@ class TransactionsViewModel
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(
-        ScreenUiState(transactionsState = TransactionsUiState.Loading)
+        ScreenUiState(
+            transactionsState = TransactionsUiState(transactions = emptyList(), isLoading = true)
+        )
     )
     val uiState: StateFlow<ScreenUiState> = _uiState.asStateFlow()
 
@@ -26,8 +28,8 @@ class TransactionsViewModel
         viewModelScope.launch {
             val transactionsState =
                 getTransactions()
-                    .map { TransactionsUiState.Transactions(it) }
-                    .getOrElse { TransactionsUiState.Error }
+                    .map { TransactionsUiState(transactions = it, isLoading = false) }
+                    .getOrElse { TODO() }
 
             _uiState.value = ScreenUiState(transactionsState = transactionsState)
         }
@@ -35,9 +37,8 @@ class TransactionsViewModel
 
     data class ScreenUiState(val transactionsState: TransactionsUiState)
 
-    sealed interface TransactionsUiState {
-        data class Transactions(val transactions: List<Transaction>) : TransactionsUiState
-        object Loading : TransactionsUiState
-        object Error : TransactionsUiState
-    }
+    data class TransactionsUiState(
+        val transactions: List<Transaction>,
+        val isLoading: Boolean,
+    )
 }

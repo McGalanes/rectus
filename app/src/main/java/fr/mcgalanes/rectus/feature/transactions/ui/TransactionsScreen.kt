@@ -64,23 +64,20 @@ fun TransactionList(
     transactionsState: TransactionsUiState,
     onTransactionItemClick: (Transaction) -> Unit,
 ) {
-    when (transactionsState) {
-        is TransactionsUiState.Loading ->
-            Box(modifier = Modifier.fillMaxSize()) {
-                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-            }
+    if (transactionsState.isLoading) {
+        Box(modifier = Modifier.fillMaxSize()) {
+            CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+        }
+        return
+    }
 
-        is TransactionsUiState.Transactions ->
-            LazyColumn(modifier = Modifier.fillMaxSize()) {
-                items(items = transactionsState.transactions) {
-                    TransactionItem(
-                        transaction = it,
-                        onTransactionItemClick = onTransactionItemClick,
-                    )
-                }
-            }
-
-        TransactionsUiState.Error -> TODO()
+    LazyColumn(modifier = Modifier.fillMaxSize()) {
+        items(items = transactionsState.transactions) {
+            TransactionItem(
+                transaction = it,
+                onTransactionItemClick = onTransactionItemClick,
+            )
+        }
     }
 }
 
