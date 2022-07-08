@@ -1,12 +1,12 @@
 package fr.mcgalanes.rectus.feature.transactions.ui
 
-import fr.mcgalanes.rectus.core.testing.rule.MainCoroutineScopeRule
+import app.cash.turbine.test
+import fr.mcgalanes.rectus.core.testing.rule.TestDispatcherRule
 import fr.mcgalanes.rectus.feature.transactions.domain.nextTransactionList
 import fr.mcgalanes.rectus.feature.transactions.domain.usecase.GetTransactionsUseCase
 import fr.mcgalanes.rectus.feature.transactions.ui.TransactionsViewModel.TransactionsUiState
 import io.mockk.coEvery
 import io.mockk.mockk
-import java.io.IOException
 import kotlin.random.Random
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -21,36 +21,62 @@ import org.junit.Test
 @OptIn(ExperimentalCoroutinesApi::class)
 internal class TransactionsViewModelTest {
 
-    @get:Rule val coroutineScopeRule = MainCoroutineScopeRule()
+    @get:Rule val dispatcherRule = TestDispatcherRule()
 
     private val getTransactions: GetTransactionsUseCase = mockk()
     private fun viewModel() = TransactionsViewModel(getTransactions)
 
     @Test
-    fun `on init should show loading`() = runTest {
+    fun `on init should show loading and empty transactions`() = runTest {
         //WHEN
         val viewModel = viewModel()
 
         //THEN
-        assertTrue(viewModel.uiState.value.transactionsState.isLoading)
+        viewModel.uiState.test {
+            assertEquals(
+                TransactionsUiState(transactions = emptyList(), isLoading = true),
+                awaitItem().transactionsState,
+            )
+        }
     }
 
     @Test
-    fun `on init should show transactions when succeed`() = runTest {
+    fun `onEndScrollReached should show loading`() = runTest {
         //GIVEN
-        val transactions = Random.nextTransactionList(size = 3)
+        val transactions = Random.nextTransactionList(size = 5).toMutableList()
         coEvery { getTransactions() } returns Result.success(transactions)
-
-        //WHEN
         val viewModel = viewModel()
 
+        //WHEN
+        viewModel.onEndScrollReached()
+
         //THEN
-        assertEquals(
-            TransactionsUiState(
-                transactions = transactions,
-                isLoading = false,
-            ),
-            viewModel.uiState.value.transactionsState
-        )
+        viewModel.uiState.test {
+            assertTrue(awaitItem().transactionsState.isLoading)
+        }
+    }
+
+    @Test
+    fun `onEndScrollReached should show transactions when succeed`() = runTest {
+        //GIVEN
+        val transactions = Random.nextTransactionList(size = 5).toMutableList()
+        coEvery { getTransactions() } returns Result.success(transactions)
+        val viewModel = viewModel()
+
+        //WHEN
+        viewModel.onEndScrollReached()
+
+        //THEN
+        viewModel.uiState.test {
+            skipItems(1)
+
+            assertEquals(
+                TransactionsUiState(
+                    transactions = transactions,
+                    isLoading = false,
+                ),
+                awaitItem().transactionsState,
+            )
+        }
     }
 }

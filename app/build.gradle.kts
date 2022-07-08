@@ -83,6 +83,7 @@ dependencies {
     implementation(libs.moshi.core)
     implementation(libs.retrofit.converter.moshi)
     implementation(libs.retrofit.core)
+    implementation(libs.turbine)
 
 
     ksp(libs.compose.destinations.ksp)

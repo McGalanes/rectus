@@ -138,7 +138,7 @@ fun TransactionItem(
 fun TransactionPriceLabel(
     modifier: Modifier = Modifier,
     style: TextStyle,
-    priceInDecimal: Double?,
+    priceInDecimal: Double,
     fontWeight: FontWeight = FontWeight.Normal,
     showPlusSymbol: Boolean = true,
     color: Color = DarkPurple,
@@ -146,7 +146,7 @@ fun TransactionPriceLabel(
     Text(
         modifier = modifier,
         fontWeight = fontWeight,
-        text = priceInDecimal?.toPriceString(showPlusSymbol = showPlusSymbol) ?: "...",
+        text = priceInDecimal.toPriceString(showPlusSymbol = showPlusSymbol),
         style = style,
         color = color,
     )

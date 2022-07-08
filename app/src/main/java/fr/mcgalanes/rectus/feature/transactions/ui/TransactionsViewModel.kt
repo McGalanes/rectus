@@ -9,6 +9,7 @@ import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 @HiltViewModel
@@ -24,21 +25,35 @@ class TransactionsViewModel
     )
     val uiState: StateFlow<ScreenUiState> = _uiState.asStateFlow()
 
-    init {
-        viewModelScope.launch {
-            val transactionsState =
-                getTransactions()
-                    .map { TransactionsUiState(transactions = it, isLoading = false) }
-                    .getOrElse { TODO() }
+    fun onEndScrollReached() {
+        _uiState.update {
+            ScreenUiState(
+                transactionsState = it.transactionsState.copy(isLoading = true)
+            )
+        }
 
-            _uiState.value = ScreenUiState(transactionsState = transactionsState)
+        viewModelScope.launch {
+            getTransactions()
+                .map { transactions ->
+                    _uiState.update {
+                        ScreenUiState(
+                            transactionsState = TransactionsUiState(
+                                transactions = it.transactionsState.transactions
+                                    .toMutableList()
+                                    .apply { addAll(transactions) },
+                                isLoading = false,
+                            ),
+                        )
+                    }
+                }
+                .getOrElse { TODO() }
         }
     }
 
     data class ScreenUiState(val transactionsState: TransactionsUiState)
 
     data class TransactionsUiState(
-        val transactions: List<Transaction>,
-        val isLoading: Boolean,
+        val transactions: List<Transaction> = emptyList(),
+        val isLoading: Boolean = false,
     )
 }
