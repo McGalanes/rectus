@@ -6,9 +6,11 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import fr.mcgalanes.rectus.feature.transactions.domain.model.Transaction
 import fr.mcgalanes.rectus.feature.transactions.domain.usecase.GetTransactionsUseCase
 import javax.inject.Inject
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -24,6 +26,9 @@ class TransactionsViewModel
         )
     )
     val uiState: StateFlow<ScreenUiState> = _uiState.asStateFlow()
+
+    private val _navigationEvents = Channel<NavigationEvent>()
+    val navigationEvents = _navigationEvents.receiveAsFlow()
 
     fun onEndScrollReached() {
         _uiState.update {
@@ -50,10 +55,20 @@ class TransactionsViewModel
         }
     }
 
+    fun onTransactionItemClick(transaction: Transaction) {
+        viewModelScope.launch {
+            _navigationEvents.send(NavigationEvent.ShowTransactionDetail(transaction))
+        }
+    }
+
     data class ScreenUiState(val transactionsState: TransactionsUiState)
 
     data class TransactionsUiState(
         val transactions: List<Transaction> = emptyList(),
         val isLoading: Boolean = false,
     )
+
+    sealed interface NavigationEvent {
+        data class ShowTransactionDetail(val transaction: Transaction) : NavigationEvent
+    }
 }

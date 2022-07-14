@@ -2,8 +2,10 @@ package fr.mcgalanes.rectus.feature.transactions.ui
 
 import app.cash.turbine.test
 import fr.mcgalanes.rectus.core.testing.rule.TestDispatcherRule
+import fr.mcgalanes.rectus.feature.transactions.domain.nextTransaction
 import fr.mcgalanes.rectus.feature.transactions.domain.nextTransactionList
 import fr.mcgalanes.rectus.feature.transactions.domain.usecase.GetTransactionsUseCase
+import fr.mcgalanes.rectus.feature.transactions.ui.TransactionsViewModel.NavigationEvent
 import fr.mcgalanes.rectus.feature.transactions.ui.TransactionsViewModel.TransactionsUiState
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -76,6 +78,24 @@ internal class TransactionsViewModelTest {
                     isLoading = false,
                 ),
                 awaitItem().transactionsState,
+            )
+        }
+    }
+
+    @Test
+    fun `onTransactionItemClick should show transaction detail`() = runTest {
+        //GIVEN
+        val transaction = Random.nextTransaction()
+        val viewModel = viewModel()
+
+        //WHEN
+        viewModel.onTransactionItemClick(transaction)
+
+        //THEN
+        viewModel.navigationEvents.test {
+            assertEquals(
+                NavigationEvent.ShowTransactionDetail(transaction),
+                awaitItem(),
             )
         }
     }

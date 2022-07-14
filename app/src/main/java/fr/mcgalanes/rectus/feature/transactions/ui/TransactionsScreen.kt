@@ -41,6 +41,7 @@ import fr.mcgalanes.rectus.core.ui.theme.DarkPurple
 import fr.mcgalanes.rectus.core.ui.theme.Gray
 import fr.mcgalanes.rectus.core.ui.theme.Orange90
 import fr.mcgalanes.rectus.feature.transactions.domain.model.Transaction
+import fr.mcgalanes.rectus.feature.transactions.ui.TransactionsViewModel.NavigationEvent
 import fr.mcgalanes.rectus.feature.transactions.ui.TransactionsViewModel.ScreenUiState
 import fr.mcgalanes.rectus.feature.transactions.ui.TransactionsViewModel.TransactionsUiState
 import fr.mcgalanes.rectus.feature.transactions.ui.destinations.TransactionDetailRouteDestination
@@ -55,10 +56,19 @@ fun TransactionRoute(
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
+    LaunchedEffect(key1 = true) {
+        viewModel.navigationEvents.collect {
+            when (it) {
+                is NavigationEvent.ShowTransactionDetail ->
+                    navigator.navigate(TransactionDetailRouteDestination(it.transaction))
+            }
+        }
+    }
+
     TransactionsScreen(
         modifier = modifier,
         uiState = uiState,
-        onTransactionItemClick = { navigator.navigate(TransactionDetailRouteDestination(it)) },
+        onTransactionItemClick = viewModel::onTransactionItemClick,
         onEndScrollReached = viewModel::onEndScrollReached,
     )
 }
