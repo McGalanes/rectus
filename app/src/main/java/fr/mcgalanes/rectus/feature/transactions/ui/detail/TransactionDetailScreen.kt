@@ -28,6 +28,11 @@ import fr.mcgalanes.rectus.feature.transactions.ui.TransactionPriceLabel
 
 @Destination
 @Composable
+fun TransactionDetailRoute(transaction: Transaction) {
+    TransactionDetailScreen(transaction)
+}
+
+@Composable
 fun TransactionDetailScreen(
     transaction: Transaction,
 ) {

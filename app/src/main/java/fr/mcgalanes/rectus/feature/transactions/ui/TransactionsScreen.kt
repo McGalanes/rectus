@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -18,6 +19,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -39,38 +41,50 @@ import fr.mcgalanes.rectus.core.ui.theme.DarkPurple
 import fr.mcgalanes.rectus.core.ui.theme.Gray
 import fr.mcgalanes.rectus.core.ui.theme.Orange90
 import fr.mcgalanes.rectus.feature.transactions.domain.model.Transaction
+import fr.mcgalanes.rectus.feature.transactions.ui.TransactionsViewModel.ScreenUiState
 import fr.mcgalanes.rectus.feature.transactions.ui.TransactionsViewModel.TransactionsUiState
-import fr.mcgalanes.rectus.feature.transactions.ui.destinations.TransactionDetailScreenDestination
+import fr.mcgalanes.rectus.feature.transactions.ui.destinations.TransactionDetailRouteDestination
 
 @RootNavGraph(start = true)
 @Destination
 @Composable
-fun TransactionsScreen(
+fun TransactionRoute(
+    modifier: Modifier = Modifier,
     viewModel: TransactionsViewModel = hiltViewModel(),
     navigator: DestinationsNavigator,
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
+    TransactionsScreen(
+        modifier = modifier,
+        uiState = uiState,
+        onTransactionItemClick = { navigator.navigate(TransactionDetailRouteDestination(it)) },
+        onEndScrollReached = viewModel::onEndScrollReached,
+    )
+}
+
+@Composable
+fun TransactionsScreen(
+    modifier: Modifier = Modifier,
+    uiState: ScreenUiState,
+    onTransactionItemClick: (Transaction) -> Unit,
+    onEndScrollReached: () -> Unit,
+) {
     TransactionList(
+        modifier = modifier,
         transactionsState = uiState.transactionsState,
-        onTransactionItemClick = {
-            navigator.navigate(TransactionDetailScreenDestination(it))
-        },
+        onTransactionItemClick = onTransactionItemClick,
+        onEndScrollReached = onEndScrollReached,
     )
 }
 
 @Composable
 fun TransactionList(
+    modifier: Modifier = Modifier,
     transactionsState: TransactionsUiState,
     onTransactionItemClick: (Transaction) -> Unit,
+    onEndScrollReached: () -> Unit,
 ) {
-    if (transactionsState.isLoading) {
-        Box(modifier = Modifier.fillMaxSize()) {
-            CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-        }
-        return
-    }
-
     LazyColumn(modifier = Modifier.fillMaxSize()) {
         items(items = transactionsState.transactions) {
             TransactionItem(
@@ -78,14 +92,33 @@ fun TransactionList(
                 onTransactionItemClick = onTransactionItemClick,
             )
         }
+
+        item {
+            LoadingItem(modifier)
+
+            LaunchedEffect(key1 = true) {
+                onEndScrollReached()
+            }
+        }
+    }
+}
+
+@Composable
+fun LoadingItem(modifier: Modifier) {
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .height(54.dp)
+    ) {
+        CircularProgressIndicator(modifier = modifier.align(Alignment.Center))
     }
 }
 
 @Composable
 fun TransactionItem(
+    modifier: Modifier = Modifier,
     transaction: Transaction,
     onTransactionItemClick: (Transaction) -> Unit,
-    modifier: Modifier = Modifier
 ) {
     Row(
         modifier = modifier
